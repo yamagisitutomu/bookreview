@@ -1,0 +1,62 @@
+<header class="sticky-top" style="background-color: #d9333f; color: #eaedf7;">
+  <div class = "container-fluid ">
+    <div class="row mx-auto">
+      <div class="col-3 my-4">
+        <%= link_to root_path, style: "color: white;" do %>
+          <i class="fa-solid fa-apple-whole"></i>bookreview
+        <% end %>
+      </div>
+      <div class="col-3 my-4">
+        <% if customer_signed_in?%>
+          <p><%= "ようこそ！#{current_customer.family_name} さん" %></p>
+        <% end %>
+      </div>
+<!--admin login時header-->
+      <div class="col-6">
+        <ul class="row justify-content-end my-2 list-unstyled">
+        <% if admin_signed_in? %>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  admin_customers_path, style: "color: white;" do %>
+            <i class="fa-solid fa-users"></i>会員一覧
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  destroy_admin_session_path, style: "color: white;", method: :delete do %>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
+          <% end %>
+        </li>
+                          
+        <% elsif customer_signed_in? %>   
+        <li class="nav-item mx-2 my-4">
+          <%= link_to customers_mypage_path, style: "color: white;" do %>
+            <i class="fa-solid fa-cake-candles"></i>マイページ
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to destroy_customer_session_path, style: "color: white;", method: :delete do %>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
+          <% end %>
+        </li>
+<!--customer login時-->  
+        <% else %>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to about_path, style: "color: white;" do %>
+            <i class="fa-solid fa-cake-candles"></i>アバウト
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to new_customer_registration_path, style: "color: white;" do %>
+            <i class="fa-solid fa-user-plus"></i>新規登録
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to new_customer_session_path, style: "color: white;" do %>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>ログイン
+          <% end %>
+        </li>
+        <% end %>  
+        </ul>
+      </div>
+    </div>
+  </div>  
+</header>     
