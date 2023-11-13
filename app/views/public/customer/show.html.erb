@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h3>マイページ</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2 ">
+      <h5>登録情報</h5>
+      </div>
+    <div class="col-2">
+      <%= link_to "編集する", edit_customer_path(@customer), class: "btn custom1-btn" %>
+    </div>
+    <div class="col-8"></div>
+  </div>
+  <div class="row">
+      <table class="table table-bordered">
+        <tr>
+          <th>名前</th>
+          <td><%= @customer.name %></td>
+        </tr>
+        <tr>
+          <th>生年月日</th>
+          <td><%= @customer.birthdate %></td>
+        </tr>
+        <tr>
+          <th>性別性別</th>
+          <td><%= @customer.gender %></td>
+        </tr>
+        <tr>
+          <th>メールアドレス</th>
+          <td><%= @customer.email %></td>
+        </tr>
+      </table>
+    </div>

@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h4>会員情報を編集</h4>
+      <%= form_with model: @customer do |f| %>
+      
+      <table>
+        <tr>
+          <th>
+            <label for="inputname">名前</label>
+          </th>
+          <th>
+            <%= f.text_field :name, autofocus: true, id:"inputName" %>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <label for="inputbirthdate">生年月日</label>
+          </th>
+          <th>
+            <%= f.date_field :bithdate, autofocus: true, id:"inputbirthdate" %>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <label for="inputgender">性別</label>
+          </th>
+          <th>
+            <%= f.select :gender, ['Male', 'Female', 'Other'] autofocus: true, id:"inputgender" %>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <label for="inputEmail">メールアドレス</label>
+          </th>
+          <th>
+             <%= f.text_field :email, autofocus: true, id:"inputEmail" %>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <%= f.submit "編集内容を保存する", class: "btn custom1-btn" %>
+          </th>
+          <th>
+            <%= link_to "退会する", customers_check_path, class: "btn btn-danger ms-3" %>
+          </th>
+        </tr>
+      </table>
+      <% end %>
+    </div>
+  </div>
+</div>
