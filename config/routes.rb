@@ -30,7 +30,7 @@ root to: 'public/homes#top'
 namespace :admin do
   get 'homes/top' => 'homes#top'
   resources :customers, only: [:index, :show, :edit, :update]
-  resources :books, only: [:index,:show,] do
+  resources :books do
    resources :posts, only: [:index, :show, :edit, :update, :destroy]
    resource :favorites, only: [:destroy]
   end
@@ -46,7 +46,7 @@ scope module: :public do
  # 論理削除用のルーティング
    patch  '/customers/withdraw' => 'customers#withdraw'
    resources :customers, only: [:show, :edit, :update]
-   resources :books, only: [:index,:show] do
+   resources :books do
     resources :posts, only: [:index, :show, :edit, :update, :destroy]
     resource :favorites, only: [:create, :destroy]
    end
