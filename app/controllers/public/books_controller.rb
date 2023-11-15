@@ -1,7 +1,7 @@
 class Public::BooksController < ApplicationController
-  def new
+  def search
   end
-
+  
   def index
     if params[:keyword]
     @books = RakutenWebService::Books::Book.search(title: params[:keyword])
@@ -9,7 +9,7 @@ class Public::BooksController < ApplicationController
   end
   
   def show
-    @book = Book.find(params[:id])
+    @book = Book.find_by(id: params[:id])
   end
 end
 

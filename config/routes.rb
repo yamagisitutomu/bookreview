@@ -46,7 +46,7 @@ scope module: :public do
  # 論理削除用のルーティング
    patch  '/customers/withdraw' => 'customers#withdraw'
    resources :customers, only: [:show, :edit, :update]
-   resources :books do
+   resources :books, param: :isbn do
     resources :posts, only: [:index, :show, :edit, :update, :destroy]
     resource :favorites, only: [:create, :destroy]
    end
