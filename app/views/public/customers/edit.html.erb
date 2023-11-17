@@ -7,7 +7,7 @@
       <table>
         <tr>
           <th>
-            <label for="inputname">名前</label>
+            <label for="inputName">名前</label>
           </th>
           <th>
             <%= f.text_field :name, autofocus: true, id:"inputName" %>
@@ -15,18 +15,18 @@
         </tr>
         <tr>
           <th>
-            <label for="inputbirthdate">生年月日</label>
+            <label for="inputBirthdate">生年月日</label>
           </th>
           <th>
-            <%= f.date_field :bithdate, autofocus: true, id:"inputbirthdate" %>
+            <%= f.date_field :birthdate, autofocus: true, id:"inputBirthdate" %>
           </th>
         </tr>
         <tr>
           <th>
-            <label for="inputgender">性別</label>
+            <label for="inputGender">性別</label>
           </th>
           <th>
-            <%= f.select :gender, ['Male', 'Female', 'Other'] autofocus: true, id:"inputgender" %>
+            <%= f.select_field :gender, ['男性', '女性', 'その他'] autofocus: true, id:"inputGender" %>
           </th>
         </tr>
         <tr>

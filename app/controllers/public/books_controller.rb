@@ -16,5 +16,5 @@ end
   private
 
   def book_params
-    params.require(:book).permit(:star, :category)
+    params.require(:book).permit(:id, :star, :category)
   end

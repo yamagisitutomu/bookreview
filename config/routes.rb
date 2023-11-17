@@ -1,16 +1,4 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    get 'customers/index'
-    get 'customers/edit'
-    get 'customers/show'
-  end
-  namespace :public do
-    get 'customer/show'
-    get 'customer/edit'
-  end
-  namespace :public do
-    get 'homes/top'
-  end
 # 顧客用
 # URL /customers/sign_in ...
 devise_for :customers,skip: [:passwords], controllers: {
@@ -30,8 +18,8 @@ root to: 'public/homes#top'
 namespace :admin do
   get 'homes/top' => 'homes#top'
   resources :customers, only: [:index, :show, :edit, :update]
+  resources :posts, only: [:index, :show, :edit, :update, :destroy]
   resources :books do
-   resources :posts, only: [:index, :show, :edit, :update, :destroy]
    resource :favorites, only: [:destroy]
   end
 end
@@ -46,8 +34,8 @@ scope module: :public do
  # 論理削除用のルーティング
    patch  '/customers/withdraw' => 'customers#withdraw'
    resources :customers, only: [:show, :edit, :update]
+   resources :posts, only: [:index, :show, :edit, :update, :destroy]
    resources :books, param: :isbn do
-    resources :posts, only: [:index, :show, :edit, :update, :destroy]
     resource :favorites, only: [:create, :destroy]
    end
 end

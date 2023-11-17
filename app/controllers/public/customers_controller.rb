@@ -1,4 +1,4 @@
-class Public::CustomerController < ApplicationController
+class Public::CustomersController < ApplicationController
    before_action :authenticate_customer!, only: [:show, :edit, :update, :withdraw]
 
 
