@@ -9,7 +9,7 @@ class Public::BooksController < ApplicationController
   end
   
   def show
-    @book = Book.find_by(id: params[:id])
+    @book = RakutenWebService::Books::Book.search(isbn: params[:isbn]).first
   end
 end
 

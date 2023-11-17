@@ -1,7 +1,7 @@
-<table class='table'>
+<table class= "table table-bordered" style="color: #000000;" >
   <thead>
     <tr>
-      <th>name</th>
+      <th>名前</th>
       <th>性別</th>
       <th></th>
     </tr>
@@ -11,7 +11,7 @@
       <tr>
         <td><%= customer.name %></td>
         <td><%= customer.gender %></td>
-        <td><%= link_to 'Show', customer, class: "customer_#{customer.id}" %></td>
+        <td><%= link_to 'Show', customer_path(customer), class: "customer_#{customer.id}" %></td>
       </tr>
     <% end %>
   </tbody>

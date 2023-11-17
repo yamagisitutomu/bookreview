@@ -17,14 +17,13 @@
       </thead>
       <tbody>
         <% @books.each do |book| %>
-  <!--<div class="commic-data">-->
           <tr>
             <td><%= link_to (image_tag(book.medium_image_url)), book.item_url %></td>
             <td><%= book.title %></td>
             <td><%= book.author %></td>
             <td><%= book.sales_date %></td>
             <td><%= book.isbn%></td>
-            <td><%= link_to '詳細', book_path(book.isbn), class: "book_#{book.isbn}" %></td>
+            <td><%= link_to '詳細', book_path(isbn: book.isbn), class: "book_#{book.isbn}" %></td>
           </tr>
         <% end %>
       </tbody>

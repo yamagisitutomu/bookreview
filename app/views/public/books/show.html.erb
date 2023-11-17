@@ -3,13 +3,56 @@
     <div class='col-md-1'></div>
     <div class='col-md-10'>
     <table class='table table-hover table-inverse'>
+      <thead>
         <tr>
-            <td><%= link_to (image_tag(book.medium_image_url)), book.item_url %></td>
-            <td><%= book.title %></td>
-            <td><%= book.author %></td>
-            <td><%= book.sales_date %></td>
-            <td><%= book.isbn%></td>
+          <th></th>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>出版日</th>
+          <th>ISBN</th>
         </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td><%= link_to (image_tag(@book.medium_image_url)), @book.item_url %></td>
+            <td><%= @book.title %></td>
+            <td><%= @book.author %></td>
+            <td><%= @book.sales_date %></td>
+            <td><%= @book.isbn%></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Book review</h2>
+    <table class='table table-hover table-inverse'>
+      <tr>
+        <td>
+          <%= form_with model: @post do |f| %>
+            <div class="form-group" id="star">
+              <%= f.label :star %>
+              <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
+              <div id="post_raty"></div>
+            </div>
+            <script>
+              $(document).on('turbolinks:load', function() {
+                let elem = document.querySelector('#post_raty');
+                if (elem == null) return;
+  
+                elem.innerHTML = ""
+                let opt = {  
+                  starOn: "<%= asset_path('star-on.png') %>",
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: 'book[star]',
+                };
+                raty(elem, opt);
+              });
+            </script>
+          <div class="form-group">
+            <%= f.submit class: 'btn btn-success' %>
+          </div>
+          <% end %>
+        </td>
+      </tr>
     </table>
     </div>
     <div class='col-md-1'></div>

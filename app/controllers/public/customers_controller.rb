@@ -1,9 +1,13 @@
 class Public::CustomersController < ApplicationController
-   before_action :authenticate_customer!, only: [:show, :edit, :update, :withdraw]
-
-
+   before_action :authenticate_customer!, only: [:show, :edit, :update, :withdraw, :index]
+  
+  def index
+    @customers = Customer.page(params[:page]).per(10)
+  end
+  
+  
   def show
-    @customer = current_customer
+    @customer = Customer.find(params[:id])
   end
 
   def edit

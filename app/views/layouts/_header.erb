@@ -25,11 +25,16 @@
             <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
           <% end %>
         </li>
-                          
-        <% elsif customer_signed_in? %>   
+<!--customer login時-->
+        <% elsif customer_signed_in? %>
         <li class="nav-item mx-2 my-4">
-          <%= link_to customers_mypage_path, style: "color: white;" do %>
-            <i class="fa-solid fa-cake-candles"></i>マイページ
+            <%= link_to customer_path(current_customer), style: "color: white;" do %>
+              <i class="fas fa-home"></i> Home
+            <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  customers_path, style: "color: white;" do %>
+            <i class="fa-solid fa-users"></i>会員一覧
           <% end %>
         </li>
         <li class="nav-item mx-2 my-4">
@@ -37,8 +42,13 @@
             <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
           <% end %>
         </li>
-<!--customer login時-->  
+<!--customer login前-->  
         <% else %>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to root_path, style: "color: white;" do %>
+            <i class="fas fa-home"></i> Home
+          <% end %>
+        </li>
         <li class="nav-item mx-2 my-4">
           <%= link_to about_path, style: "color: white;" do %>
             <i class="fa-solid fa-book-open"></i>アバウト
