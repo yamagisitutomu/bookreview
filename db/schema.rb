@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_17_212508) do
+ActiveRecord::Schema.define(version: 2023_11_13_073044) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -24,7 +24,12 @@ ActiveRecord::Schema.define(version: 2023_11_17_212508) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
-  create_table "books", force: :cascade do |t|
+  create_table "books", id: false, force: :cascade do |t|
+    t.string "title"
+    t.string "author"
+    t.bigint "isbn", null: false
+    t.string "image_url"
+    t.string "sales_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -46,9 +51,14 @@ ActiveRecord::Schema.define(version: 2023_11_17_212508) do
   end
 
   create_table "posts", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.integer "customer_id", null: false
+    t.string "star"
+    t.text "review"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "ster"
+    t.index ["book_id"], name: "index_posts_on_book_id"
+    t.index ["customer_id"], name: "index_posts_on_customer_id"
   end
 
 end

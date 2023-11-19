@@ -4,7 +4,7 @@ class Public::RegistrationsController < Devise::RegistrationsController
  before_action :configure_permitted_parameters, if: :devise_controller?
  
   def after_sign_in_path_for(resource)
-    customers_mypage_path
+    customer_path(current_customer)
   end
 
 

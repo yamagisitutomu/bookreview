@@ -1,20 +1,50 @@
 class Public::BooksController < ApplicationController
+  before_action :some_action, only: [:index]
   def search
+    @title = params[:title]
+    return unless @title.present?
+    
+  end
+
+  # モデルにsome_actionでのデータの保存の記述
+  def some_action
+    @title = params[:title]
+    @search_result = Book.fetch_and_save_from_rakuten(@title)
   end
   
+  
   def index
-    if params[:keyword]
-    @books = RakutenWebService::Books::Book.search(title: params[:keyword])
-    end
+    @books = RakutenWebService::Books::Book.search(title: params[:title])
+    
   end
   
   def show
-    @book = RakutenWebService::Books::Book.search(isbn: params[:isbn]).first
+    @book = Book.find_by(isbn: params[:isbn])
+    @post = Post.new(book: @book)
   end
-end
 
   private
-
-  def book_params
-    params.require(:book).permit(:id, :star, :category)
+  #「楽天APIのデータから必要なデータを絞り込む」、且つ「対応するカラムにデータを格納する」メソッドを設定していきます。
+  def read(result)
+    title = result["title"]
+    author = result["author"]
+    isbn = result["isbn"]
+    sales_date = result["sales_date"]
+    image_url = result["mediumImageUrl"].gsub('?_ex=120x120', '')
+    {
+      title: title,
+      author: author,
+      isbn: isbn,
+      sales_date: sales_date,
+      image_url: image_url,
+    }
   end
+
+  def load_book
+    @book = Book.find_by(isbn: params[:isbn])
+  end
+  
+  def book_params
+    params.require(:book).permit(:id, :star, :title, :author, :isbn, :sales_date, :image_url)
+  end
+end
