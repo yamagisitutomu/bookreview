@@ -1,4 +1,13 @@
 <%= render "layouts/errors", po: @post %>
+
+<style>
+  .comment {
+    word-wrap: break-word; /* 長い単語を改行する */
+    overflow-wrap: break-word; /* ソフトハイフンや半角スペースで改行する */
+    max-width: 300px; /* コメント部分の最大幅を指定 */
+  }
+</style>
+
 <div class='container'>
   <div class='row'>
     <div class='col-md-1'></div>
@@ -42,7 +51,7 @@
               $(document).on('turbolinks:load', function() {
                 let elem = document.querySelector('#post_raty');
                 if (elem == null) return;
-  
+                
                 elem.innerHTML = ""
                 let opt = {  
                   starOn: "<%= asset_path('star-on.png') %>",
@@ -54,41 +63,60 @@
               });
             </script>
           <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
-          <!-- 書評送信ボタン -->
           <div class="form-group">
-            <%= f.submit class: 'btn btn-success' %>
+            <%= f.submit "レビュー投稿",class: 'btn btn-success' %>
           </div>
           <% end %>
         </td>
       </tr>
     </table>
-     <td id="star_counter">
+    <!--星の平均-->
+      <td id="star_counter">
            平均値:<%= render "public/posts/static_rate_average", book: @book %>
       </td>
+      <!--コメントの数-->
       <td id="review_counter">
            <%= render "public/posts/review_counter", book: @book %>
       </td>
-    <table>
+    <table class="table">
       <thead>
         <tr>
+          <th>評価</th>
           <th></th>
           <th>会員名</th>
           <th>投稿日</th>
           <th>レビュー</th>
-          <th></th>
-          <th></th>
+          <th>編集</th>
+          <th>削除</th>
+          <th>コメント</th>
         </tr>
       </thead>
       <tbody>
+        <!--レビュー詳細-->
         <% @book.posts.each do |post| %>
         <tr>
           <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
           <td><%= post.customer.name %></td>
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
-          <td><%= post.review %></td>
+          <td class="comment"><%= post.review %></td>
           <% if post.persisted? && post.customer == current_customer %>
-          <td><%= link_to 'Edit', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
-          <td><%= link_to 'Destroy', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+          <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
+          <td><%= link_to '削除', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+          <% end %>
+          <td colspan="3">
+            <!--コメント投稿-->
+            <%= render "public/comments/form", post: post %>
+          </td>
+          <% post.comments.each do |comment| %>
+            <tr>
+              <td class="comment">コメント
+                <strong><%= comment.customer.name %>:</strong>
+                <%= comment.body %>
+                <% if comment.customer == current_customer %>
+                <%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, "data-confirm" => t('comments.create.delete_confirm'), class: "btn-sm btn-danger" %>
+                <% end %>
+              </td>
+            </tr>
           <% end %>
         </tr>
         <% end %>

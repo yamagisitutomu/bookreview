@@ -5,6 +5,8 @@ class Public::PostsController < ApplicationController
   end
 
   def show
+    @post = Post.find(params[:id])
+    @comment = Comment.new
   end
 
   def edit
@@ -23,9 +25,9 @@ class Public::PostsController < ApplicationController
   end
 
   def destroy
-  @post = Post.find(params[:id])
-  @post.destroy
-  redirect_to book_path(@post.book.isbn), notice: 'レビューが削除されました。'
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect_to book_path(@post.book.isbn), notice: 'レビューが削除されました。'
   end
   
   def create
