@@ -16,7 +16,7 @@
       <tbody>
         <tr>
           <!-- 本の画像（リンク） -->
-            <td><%= link_to (image_tag(@book.image_url)), @book.image_url if @book %></td>
+            <td><%= link_to (image_tag(@book.image_url, size: '100x100')), @book.image_url if @book %></td>
             <!-- 本の詳細情報 -->
             <td><%= @book.title %></td>
             <td><%= @book.author %></td>
@@ -30,10 +30,10 @@
     <table class='table table-hover table-inverse'>
       <tr>
         <td>
-          <%= form_with model: [@book, @post], url: book_posts_path(@book.isbn) do |f| %>
+          <%= form_with model: [@book, @post], url: book_posts_path(@book.isbn), local: true do |f| %>
             <div class="form-group" id="star">
               <%= f.label :star %>
-              <%= f.hidden_field :star, id: :review_star, class: 'form-control' %>
+              <%= f.hidden_field :star, id: :review_star, class: 'form-control', value: @post.star.to_i %>
               <div id="post_raty"></div>
             </div>
             <!-- Turbolinksを使用して非同期で星評価を表示 -->
@@ -47,35 +47,51 @@
                   starOn: "<%= asset_path('star-on.png') %>",
                   starOff: "<%= asset_path('star-off.png') %>",
                   starHalf: "<%= asset_path('star-half.png') %>",
-                  scoreName: 'book[star]',
+                  scoreName: 'post[star]',
                 };
                 raty(elem, opt);
               });
             </script>
-             <!-- 書評送信ボタン -->
+          <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
+          <!-- 書評送信ボタン -->
           <div class="form-group">
             <%= f.submit class: 'btn btn-success' %>
           </div>
           <% end %>
         </td>
-        <td>
-           <!-- 書評一覧 -->
-          <div>
-            <p>コメント件数：<%= @posts.count %></p>
-            <% @posts.each do |post| %>
-              <%= post.customer.name %>
-              <%= post.created_at.strftime('%Y/%m/%d') %>
-              <%= post.review %>
-            <% end %>
-          </div>
-          <div>
-            <%= form_with model: [@book, @post], url: book_posts_path(@book.isbn) do |f| %>
-              <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
-              <%= f.submit "送信する" %>
-            <% end %>
-          </div>
-        </td>
       </tr>
+    </table>
+     <td id="star_counter">
+           平均値:<%= render "public/posts/static_rate_average", book: @book %>
+      </td>
+      <td id="review_counter">
+           <%= render "public/posts/review_counter", book: @book %>
+      </td>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>会員名</th>
+          <th>投稿日</th>
+          <th>レビュー</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @book.posts.each do |post| %>
+        <tr>
+          <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
+          <td><%= post.customer.name %></td>
+          <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td><%= post.review %></td>
+          <% if @post.customer == current_customer %>
+          <td><%= link_to 'Edit', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
+          <td><%= link_to 'Destroy', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+          <% end %>
+        <% end %>
+        </tr>
+      </tbody>
     </table>
     </div>
     <div class='col-md-1'></div>

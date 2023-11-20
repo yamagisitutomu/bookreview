@@ -1,5 +1,10 @@
 class Book < ApplicationRecord
   validates :title, :author, :isbn, :sales_date, :image_url, presence: true
+  
+  has_one_attached :image
+  has_many :posts, dependent: :destroy
+  
+  
   # モデルに楽天APIから取得した情報を保存するメソッドを追加
   def self.fetch_and_save_from_rakuten(title)
     puts "Search Title: #{title}"
@@ -31,6 +36,20 @@ class Book < ApplicationRecord
   puts "Saving Book: #{book.inspect}"
     book.save
   end
+  
+  # 画像をリサイズするメソッド
+  def resize_image
+    return unless image.attached?
+
+    tempfile = MiniMagick::Image.read(image.download)
+    tempfile.resize '100x100'  # 任意のサイズに変更
+    image.attach(io: tempfile, filename: "#{isbn}_resized.jpg", content_type: 'image/jpeg')
+  end
+  
+  def review_count
+    posts.where.not(review: nil).count
+  end
+  
 
   self.primary_key = "isbn"
   has_many :posts, dependent: :destroy

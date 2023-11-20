@@ -28,7 +28,10 @@
   <body>
     <%= render 'layouts/header' %>
     <div id="wrapper">
-    <%= yield %>
+      <%= flash[:error] %>
+      <%= flash[:danger] %>
+      <%= flash[:notice] %>  
+      <%= yield %>
     </div>
     <%= render 'layouts/footer' %>
   </body>

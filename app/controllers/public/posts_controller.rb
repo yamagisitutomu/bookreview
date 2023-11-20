@@ -8,17 +8,34 @@ class Public::PostsController < ApplicationController
   end
 
   def edit
+    @book = Book.find_by(isbn: params[:book_isbn])
+    @post = Post.find(params[:id])
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    if @post.update(post_params)
+      redirect_to book_path(@post.book.isbn), notice: 'レビューが更新されました。'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+  @post = Post.find(params[:id])
+  @post.destroy
+  redirect_to book_path(@post.book.isbn), notice: 'レビューが削除されました。'
   end
   
   def create
-    # @book = RakutenWebService::Books::Book.search(isbn: params[:isbn]).first
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
+    
     if @post.save
-      redirect_to book_path(params[:isbn]), notice: 'レビューが作成されました。'
+      redirect_to book_path(@book.isbn), notice: 'レビューが作成されました。'
     else
     # エラーが発生した場合の処理
-    render 'public/books/show'
+      render 'public/books/show', locals: { book: @book }
     end
   end
   
@@ -29,7 +46,7 @@ class Public::PostsController < ApplicationController
   end
   
   def set_book
-    @book = Book.find_by(isbn: params[:isbn])
+    @book = Book.find_by(isbn: params[:book_isbn])
   end
 
 end
