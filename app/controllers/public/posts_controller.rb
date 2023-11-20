@@ -14,6 +14,7 @@ class Public::PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
+    @book = @post.book # @book を @post の関連する本にセット
     if @post.update(post_params)
       redirect_to book_path(@post.book.isbn), notice: 'レビューが更新されました。'
     else

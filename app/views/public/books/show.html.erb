@@ -1,3 +1,4 @@
+<%= render "layouts/errors", po: @post %>
 <div class='container'>
   <div class='row'>
     <div class='col-md-1'></div>
@@ -85,12 +86,12 @@
           <td><%= post.customer.name %></td>
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
           <td><%= post.review %></td>
-          <% if @post.customer == current_customer %>
+          <% if post.persisted? && post.customer == current_customer %>
           <td><%= link_to 'Edit', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
           <td><%= link_to 'Destroy', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
           <% end %>
-        <% end %>
         </tr>
+        <% end %>
       </tbody>
     </table>
     </div>
