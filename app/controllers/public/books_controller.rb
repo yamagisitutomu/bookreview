@@ -14,6 +14,7 @@ class Public::BooksController < ApplicationController
   
   
   def index
+    # 楽天APIからデータ習得
     @books = RakutenWebService::Books::Book.search(title: params[:title])
     
   end

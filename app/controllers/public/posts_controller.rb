@@ -38,7 +38,7 @@ class Public::PostsController < ApplicationController
       redirect_to book_path(@book.isbn), notice: 'レビューが作成されました。'
     else
     # エラーが発生した場合の処理
-      render 'public/books/show', locals: { book: @book }
+      redirect_to book_path(@book.isbn), notice: '評価とコメント両方入力してください'
     end
   end
   
