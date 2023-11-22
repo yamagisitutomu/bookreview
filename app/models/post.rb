@@ -3,16 +3,15 @@ class Post < ApplicationRecord
   
   def self.search_for(content, method)
     if method == 'perfect'
-      Post.where(review: content)
+      Post.joins(:customer).where('posts.review = ? AND customers.is_active = ?', content, true)
     elsif method == 'forward'
-      Post.where('review LIKE ?', content + '%')
+      Post.joins(:customer).where('posts.review LIKE ? AND customers.is_active = ?', content + '%', true)
     elsif method == 'backward'
-      Post.where('review LIKE ?', '%' + content)
+      Post.joins(:customer).where('posts.review LIKE ? AND customers.is_active = ?', '%' + content, true)
     else
-      Post.where('review LIKE ?', '%' + content + '%')
+      Post.joins(:customer).where('posts.review LIKE ? AND customers.is_active = ?', '%' + content + '%', true)
     end
   end
-  
   
   belongs_to :customer
   belongs_to :book, primary_key: "isbn"

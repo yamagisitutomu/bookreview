@@ -19,7 +19,7 @@
       <tbody>
         <% books.each do |book| %>
           <tr>
-            <td><%= link_to (image_tag(book.image_url, size: '100x100')), book.image_url %></td>
+            <td><%= link_to (image_tag(book.image_url, size: '100x100')), book.item_url %></td>
             <td><%= book.title %></td>
             <td><%= book.author %></td>
             <td><%= book.sales_date %></td>

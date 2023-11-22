@@ -3,9 +3,12 @@ class PostSearchesController < ApplicationController
     @model = params[:model]
     @content = params[:content]
     @method = params[:method]
-    #退会した人の物を省く
-    @reviews = Post.joins(:customer).merge(Customer.active).where(...)
-    
+   # 退会していない顧客の投稿のみを取得
+   @reviews = Post.joins(:customer).where(customers: { is_active: true })
+   
+   # 退会していないかつ指定された検索条件に合致する投稿を取得
+   @reviews = @reviews.search_for(@content, @method)
+  
     # ISBN に基づいて本を取得
     @book = Book.find_by(isbn: '9784863897922')
     

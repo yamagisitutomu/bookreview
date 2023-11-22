@@ -26,7 +26,9 @@
       <tbody>
         <tr>
           <!-- 本の画像（リンク） -->
-            <td><%= link_to (image_tag(@book.image_url, size: '100x100')), @book.image_url if @book %></td>
+            <td><%= link_to(@book.item_url) do %>
+                  <%= image_tag(@book.image_url, size: '100x100') %>
+                <% end %></td>
             <!-- 本の詳細情報 -->
             <td><%= @book.title %></td>
             <td><%= @book.author %></td>
