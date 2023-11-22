@@ -18,7 +18,11 @@ root to: 'public/homes#top'
 # 管理者側
   namespace :admin do
     get 'homes/top' => 'homes#top'
-    resources :customers, only: [:show, :edit, :update, :index]
+    resources :customers, only: [:show, :edit, :update, :index] do
+      member do
+      get 'show_post_history'
+      end
+    end
     resources :books, param: :isbn do
       resources :posts, only: [:index, :show, :edit, :create, :update, :destroy] do
         resources :comments, only: [:create, :destroy]
@@ -45,5 +49,5 @@ root to: 'public/homes#top'
   get "search" => "searches#search"
   # 投稿の検索で使用する
   get "/post_search" => "post_searches#search"
-end
+  end
 

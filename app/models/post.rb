@@ -17,8 +17,6 @@ class Post < ApplicationRecord
   belongs_to :customer
   belongs_to :book, primary_key: "isbn"
   has_many :comments, dependent: :destroy
-  has_many :post_book_tags, dependent: :destroy
-  has_many :book_tags, through: :post_book_tags
   
   validates :star, presence: true
   validates :review, presence: true

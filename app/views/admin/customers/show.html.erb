@@ -44,8 +44,8 @@
                          </td>
                       </tr>
                       <div class="mt-3">
-                        <td><%= link_to "編集する", edit_admin_customer_path(@customer.id), class: "btn change_button mt-3", style: "margin-right:3em; background-color: #D5CEA3;"%></td>
-                        <td> <%= link_to "投稿履歴一覧を見る", admin_books_path, class: "btn mt-3", style: "background-color: #1A120B; color: #E5E5CB;"%></td>
+                        <td><%= link_to "編集する", edit_admin_customer_path(@customer.id), class: "btn btn-success", style: "margin-right:3em"%></td>
+                        <td><%= link_to "投稿履歴一覧を見る", show_post_history_admin_customer_path(@customer), class: "btn btn-info" %></td>
                       </div>
                   </tbody>   
              </table>
