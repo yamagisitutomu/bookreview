@@ -9,7 +9,7 @@ class Public::CommentsController < ApplicationController
       redirect_to book_path(@post.book.isbn), notice: 'コメントが追加されました。'
     else
       # エラーが発生した場合の処理
-      render 'public/books/show', locals: { book: @book }
+      redirect_to book_path(@post.book.isbn), notice: 'エラーが発生しました。'
     end
   end
 

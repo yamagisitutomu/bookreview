@@ -8,6 +8,9 @@ class Customer < ApplicationRecord
   def active_for_authentication?
     super && (is_active == true)
   end
+  
+  scope :active, -> { where(is_active: true) }
+  
 
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy

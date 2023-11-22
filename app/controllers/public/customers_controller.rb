@@ -2,12 +2,15 @@ class Public::CustomersController < ApplicationController
    before_action :authenticate_customer!, only: [:show, :edit, :update, :withdraw, :index]
   
   def index
-    @customers = Customer.page(params[:page]).per(10)
+    #退会している会員を表示しない
+     @customers = Customer.where(is_active: true).page(params[:page]).per(10)
   end
   
   
   def show
     @customer = Customer.find(params[:id])
+    # 投稿が存在する本を収得
+    @books = @customer.posts.map(&:book).uniq
   end
 
   def edit

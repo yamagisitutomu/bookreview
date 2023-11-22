@@ -1,0 +1,2 @@
+class ChangeIsbnTypeInBook < ApplicationRecord
+end

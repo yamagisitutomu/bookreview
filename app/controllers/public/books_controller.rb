@@ -22,6 +22,13 @@ class Public::BooksController < ApplicationController
   def show
     @book = Book.find_by(isbn: params[:isbn])
     @post = Post.new(book: @book)
+    # 有効な顧客のみを取得
+    @reviews = @book.posts.joins(:customer).where(customers: { is_active: true })
+    # 有効な顧客のコメントのみを取得
+    @comments = @post.comments.joins(:customer).where(customers: { is_active: true })
+    puts "Book: #{@book.inspect}"
+    puts "Reviews: #{@reviews.inspect}"
+    puts "Comments: #{@comments.inspect}"
   end
 
   private

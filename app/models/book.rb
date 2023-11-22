@@ -4,6 +4,13 @@ class Book < ApplicationRecord
   has_one_attached :image
   has_many :posts, dependent: :destroy
   
+
+  
+   # メソッドを使って `Post` モデルを取得する
+  def posts_by_isbn
+    Post.where(book_isbn: self.isbn)
+  end
+  
   
   # モデルに楽天APIから取得した情報を保存するメソッドを追加
   def self.fetch_and_save_from_rakuten(title)

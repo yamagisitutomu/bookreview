@@ -41,7 +41,9 @@ root to: 'public/homes#top'
       end
     end
   end
+  # 本の検索
   get "search" => "searches#search"
-  get "tag_searches/search" => "tag_searches#search"
+  # 投稿の検索で使用する
+  get "/post_search" => "post_searches#search"
 end
 
