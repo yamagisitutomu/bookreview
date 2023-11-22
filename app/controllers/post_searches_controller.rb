@@ -18,5 +18,6 @@ class PostSearchesController < ApplicationController
   
     # 投稿に紐づく本を取得
     @books = @posts.map(&:book).uniq
+    
   end
 end
