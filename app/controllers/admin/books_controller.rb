@@ -4,7 +4,8 @@ class Admin::BooksController < ApplicationController
   
   def show
     @book = Book.find_by(isbn: params[:isbn])
-    @post = Post.new(book: @book)
+    # レビューのページネーション
+    @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(5)
   end
   
   def destroy
@@ -12,6 +13,5 @@ class Admin::BooksController < ApplicationController
     @post.destroy
     redirect_to book_path(@post.book.isbn), notice: 'レビューが削除されました。'
   end
-  
   
 end

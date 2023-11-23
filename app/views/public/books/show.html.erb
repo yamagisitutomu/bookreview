@@ -6,6 +6,9 @@
     overflow-wrap: break-word; /* ソフトハイフンや半角スペースで改行する */
     max-width: 300px; /* コメント部分の最大幅を指定 */
   }
+  .comment a {
+    white-space: nowrap; /* リンクが改行しないように設定 */
+  }
 </style>
 
 <div class='container'>
@@ -88,7 +91,7 @@
           <th></th>
           <th>会員名</th>
           <th>投稿日</th>
-          <th>レビュー</th>
+          <th>レビュー＆コメント</th>
           <th>編集</th>
           <th>削除</th>
           <th>コメント</th>
@@ -96,10 +99,11 @@
       </thead>
       <tbody>
         <!--レビュー詳細-->
-        <% @book.posts.joins(:customer).where(customers: { is_active: true }).each do |post| %>
+        <% @posts.each do |post| %>
+         <% if post.customer.is_active %>
         <tr>
           <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
-          <td><%= post.customer.name %></td>
+          <td><strong><%= post.customer.name %></strong></td>
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
           <td class="comment"><%= post.review %></td>
           <% if post.persisted? && post.customer == current_customer && post.customer.is_active %>
@@ -110,21 +114,25 @@
             <!--コメント投稿-->
             <%= render "public/comments/form", post: post %>
           </td>
+        </tr>
           <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
             <tr>
-              <td class="comment">コメント
-                <strong><%= comment.customer.name %>:</strong>
-                <%= comment.body %>
-                <% if comment.customer == current_customer %>
-                <%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %>
-                <% end %>
-              </td>
+              <td>コメント<td>
+              <td><strong><%= comment.customer.name %>:</strong></td>
+              <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
+              <td class="comment"><%= comment.body %></td>
+              <td></td>
+              <% if comment.customer == current_customer %>
+              <td class="comment"><%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
+              <% end %>
             </tr>
           <% end %>
-        </tr>
+         <% end %>
         <% end %>
       </tbody>
     </table>
+    <% @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(2) %>
+    <%= paginate @posts %>
     </div>
     <div class='col-md-1'></div>
   </div>  

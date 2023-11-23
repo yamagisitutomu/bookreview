@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                   <td><%= f.label :性別,class:"col-form-label" %></td>
-                  <td><%= f.text_field :gender,autocomplete: "gender",class:"form-control" %></td>
+                  <td><%= f.select :gender, ['男性', '女性', 'その他'], autocomplete: "gender",class:"form-control" %></td>
                 </tr>
                 <tr>
                   <td><%= f.label :メールアドレス,class:"col-form-label" %></td>

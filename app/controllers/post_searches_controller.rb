@@ -19,5 +19,7 @@ class PostSearchesController < ApplicationController
     # 投稿に紐づく本を取得
     @books = @posts.map(&:book).uniq
     
+    # ページネーション
+    @books = Kaminari.paginate_array(@books).page(params[:page]).per(10)
   end
 end

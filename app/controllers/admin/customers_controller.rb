@@ -26,7 +26,8 @@ class Admin::CustomersController < ApplicationController
   def show_post_history
     # @customerが投稿した本の一覧を取得
     @books = @customer.posts.joins(:book).distinct.pluck(:book_id).map { |book_id| Book.find(book_id) }
-  
+    # ページネーションを適用
+    @books = Kaminari.paginate_array(@books).page(params[:page]).per(5)
   # @customerをビューに渡す
     @customer = Customer.find(params[:id])
   end

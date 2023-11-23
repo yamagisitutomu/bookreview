@@ -12,6 +12,8 @@ class Public::CustomersController < ApplicationController
     @customer = Customer.find(params[:id])
     # 投稿が存在する本を収得
     @books = @customer.posts.map(&:book).uniq
+    # ページネーション
+    @books = Kaminari.paginate_array(@books).page(params[:page]).per(5)
   end
 
   def edit
