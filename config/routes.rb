@@ -23,9 +23,9 @@ root to: 'public/homes#top'
       get 'show_post_history'
       end
     end
-    resources :books, param: :isbn do
-      resources :posts, only: [:index, :show, :edit, :create, :update, :destroy] do
-        resources :comments, only: [:create, :destroy]
+    resources :books, only: [:show], param: :isbn do
+      resources :posts, only: [:show, :destroy] do
+        resources :comments, only: [:destroy]
       end
     end
   end
@@ -39,8 +39,8 @@ root to: 'public/homes#top'
  # 論理削除用のルーティング
     patch  '/customers/withdraw' => 'customers#withdraw'
     resources :customers, only: [:show, :edit, :update, :index]
-    resources :books, param: :isbn do
-      resources :posts, only: [:index, :show, :edit, :create, :update, :destroy] do
+    resources :books, only: [:show, :index], param: :isbn do
+      resources :posts, only: [:show, :edit, :create, :update, :destroy] do
         resources :comments, only: [:create, :destroy]
       end
     end

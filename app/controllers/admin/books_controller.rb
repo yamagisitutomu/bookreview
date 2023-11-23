@@ -1,9 +1,7 @@
 class Admin::BooksController < ApplicationController
   before_action :authenticate_admin!
   
-  def index
-  end
-
+  
   def show
     @book = Book.find_by(isbn: params[:isbn])
     @post = Post.new(book: @book)

@@ -1,8 +1,7 @@
 class Public::PostsController < ApplicationController
   before_action :set_book, only: [:create]
-  
-  def index
-  end
+  before_action :authenticate_customer!, only: [:edit, :update, :destroy]
+  before_action :authorize_user!, only: [:edit, :update, :destroy]
 
   def show
     @post = Post.find(params[:id])
@@ -43,6 +42,16 @@ class Public::PostsController < ApplicationController
   end
   
   private
+  
+  def authorize_user!
+    @post = Post.find(params[:id])
+
+    # ログインユーザーが投稿の作成者でない場合、権限がない旨を示す
+    unless @post.customer == current_customer
+      redirect_to root_path, notice: '権限がありません。'
+    end
+  end
+  
 
   def post_params
     params.require(:post).permit(:star, :review)

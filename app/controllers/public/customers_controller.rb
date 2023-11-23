@@ -1,6 +1,7 @@
 class Public::CustomersController < ApplicationController
    before_action :authenticate_customer!, only: [:show, :edit, :update, :withdraw, :index]
-  
+   before_action :authorize_user!, only: [:edit, :update, :withdraw, :check]
+   
   def index
     #退会している会員を表示しない
      @customers = Customer.where(is_active: true).page(params[:page]).per(10)
@@ -40,6 +41,18 @@ class Public::CustomersController < ApplicationController
   end
 
   private
+  
+  def authorize_user!
+    @customer = Customer.find(params[:id])
+
+    # ログインユーザーが編集しようとしている顧客の所有者でない場合、権限がないとして適切な処理を行う
+    unless @customer.id == current_customer.id
+      redirect_to root_path, notice: '権限がありません。'
+    end
+  end
+  
+  
+  
 
   def customer_params
     params.require(:customer).permit(:name, :birthdate, :gender, :email)
