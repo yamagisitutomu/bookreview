@@ -5,7 +5,7 @@ class Admin::BooksController < ApplicationController
   def show
     @book = Book.find_by(isbn: params[:isbn])
     # レビューのページネーション
-    @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(5)
+    @posts = @book.posts.joins(:customer).page(params[:page]).per(5)
   end
   
   def destroy

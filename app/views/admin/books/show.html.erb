@@ -67,7 +67,7 @@
           <td class="comment"><%= post.review %></td>
           <td><%= link_to '削除', admin_book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
         </tr>
-          <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
+          <% post.comments.joins(:customer).each do |comment| %>
             <tr>
               <td>コメント<td>
               <td><strong><%= comment.customer.name %>:</strong></td>

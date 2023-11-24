@@ -67,10 +67,12 @@
         <% end %>  
         </ul>
       </div>
+      <% unless admin_signed_in? %>
       <div class="col-12 d-flex justify-content-end align-items-end">
         <%= render 'public/books/search' %>
         <%= render "post_searches/form" %>
       </div>
+      <% end %>
     </div>
   </div>  
 </header>
