@@ -30,6 +30,7 @@ class Public::PostsController < ApplicationController
   end
   
   def create
+    @book = Book.find_by(isbn: params[:book_isbn])
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
     

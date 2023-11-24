@@ -13,10 +13,13 @@ class Post < ApplicationRecord
     end
   end
   
+  
   belongs_to :customer
   belongs_to :book, primary_key: "isbn"
   has_many :comments, dependent: :destroy
   
   validates :star, presence: true
   validates :review, presence: true
+  #belongs_to のオプションを設定して、customer_id と book_id の組み合わせがユニークであるようにして複数投稿を防ぐ
+  validates_uniqueness_of :customer_id, scope: :book_id
 end

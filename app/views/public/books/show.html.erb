@@ -131,7 +131,7 @@
         <% end %>
       </tbody>
     </table>
-    <% @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(2) %>
+    <% @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(5) %>
     <%= paginate @posts %>
     </div>
     <div class='col-md-1'></div>

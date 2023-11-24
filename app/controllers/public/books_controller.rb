@@ -29,7 +29,7 @@ class Public::BooksController < ApplicationController
     # 有効な顧客のコメントのみを取得
     @comments = Comment.joins(:customer).where(customers: { is_active: true })
     # 有効な顧客のみを取得し、ページネーションする
-    @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(2)
+    @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(5)
   end
 
   private
