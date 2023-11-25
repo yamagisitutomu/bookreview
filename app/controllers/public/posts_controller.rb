@@ -19,6 +19,7 @@ class Public::PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to book_path(@post.book.isbn), notice: 'レビューが更新されました。'
     else
+      flash[:error] = 'エラーが発生しました。'
       render :edit
     end
   end

@@ -1,2 +1,0 @@
-class ChangeIsbnTypeInBook < ApplicationRecord
-end
