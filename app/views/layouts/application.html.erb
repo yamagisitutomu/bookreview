@@ -9,9 +9,30 @@
     <script src="https://kit.fontawesome.com/<%= ENV['KID_CODE'] %>.js" crossorigin="anonymous"></script>
     <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      #wrapper {
+        flex: 1;
+        background-color: #afeeee
+      }
+    </style>
   </head>
 
   <body>
-    <%= yield %>
+    <%= render 'layouts/header' %>
+    <div id="wrapper">
+      <%= flash[:error] %>
+      <%= flash[:danger] %>
+      <%= flash[:notice] %>  
+      <%= yield %>
+    </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

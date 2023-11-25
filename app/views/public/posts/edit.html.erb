@@ -1,0 +1,9 @@
+<div class='container'>
+  <div class='row'>
+    <div class="col-sm-12 col-md-8 col-lg-5 px-5 px-sm-0 mx-auto">
+      <h1>投稿編集</h1>
+      <%= puts "DEBUG: @book=#{@book.inspect}, @post=#{@post.inspect}" %>
+      <%= render 'form', book: @book, post: @post %>
+      <%= link_to 'Back', @book, class: "book_#{@book.id}" %>
+  </div>
+</div>

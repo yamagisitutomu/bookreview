@@ -1,0 +1,78 @@
+<header class="sticky-top" style="background-color: #8b4513; color: #eaedf7;">
+  <div class = "container-fluid ">
+    <div class="row mx-auto">
+      <div class="col-3 my-4">
+        <%= link_to root_path, style: "color: white;" do %>
+          <h5><i class="fa-solid fa-book"></i>bookreview</h5>
+        <% end %>
+      </div>
+      <div class="col-3 my-4">
+        <% if customer_signed_in?%>
+          <p><%= "ようこそ！#{current_customer.name} さん" %></p>
+        <% end %>
+      </div>
+<!--admin login時header-->
+      <div class="col-6">
+        <ul class="row justify-content-end my-2 list-unstyled">
+        <% if admin_signed_in? %>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  admin_customers_path, style: "color: white;" do %>
+            <i class="fa-solid fa-users"></i>会員一覧
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  destroy_admin_session_path, style: "color: white;", method: :delete do %>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
+          <% end %>
+        </li>
+<!--customer login時-->
+        <% elsif customer_signed_in? %>
+        <li class="nav-item mx-2 my-4">
+            <%= link_to customer_path(current_customer), style: "color: white;" do %>
+              <i class="fas fa-home"></i> マイページ
+            <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to  customers_path, style: "color: white;" do %>
+            <i class="fa-solid fa-users"></i>会員一覧
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to destroy_customer_session_path, style: "color: white;", method: :delete do %>
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>ログアウト
+          <% end %>
+        </li>
+<!--customer login前-->  
+        <% else %>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to root_path, style: "color: white;" do %>
+            <i class="fas fa-home"></i> Home
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to about_path, style: "color: white;" do %>
+            <i class="fa-solid fa-book-open"></i>アバウト
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to new_customer_registration_path, style: "color: white;" do %>
+            <i class="fa-solid fa-user-plus"></i>新規登録
+          <% end %>
+        </li>
+        <li class="nav-item mx-2 my-4">
+          <%= link_to new_customer_session_path, style: "color: white;" do %>
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>ログイン
+          <% end %>
+        </li>
+        <% end %>  
+        </ul>
+      </div>
+      <% unless admin_signed_in? %>
+      <div class="col-12 d-flex justify-content-end align-items-end">
+        <%= render 'public/books/search' %>
+        <%= render "post_searches/form" %>
+      </div>
+      <% end %>
+    </div>
+  </div>  
+</header>

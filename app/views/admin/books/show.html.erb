@@ -1,0 +1,86 @@
+<style>
+  .comment {
+    word-wrap: break-word; /* 長い単語を改行する */
+    overflow-wrap: break-word; /* ソフトハイフンや半角スペースで改行する */
+    max-width: 300px; /* コメント部分の最大幅を指定 */
+  }
+  .comment a {
+    white-space: nowrap; /* リンクが改行しないように設定 */
+  }
+</style>
+
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-1'></div>
+    <div class='col-md-10'>
+      <!-- 本の詳細情報を表示するテーブル -->
+    <table class='table table-hover table-inverse'>
+      <thead>
+        <tr>
+          <th></th>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>出版日</th>
+          <th>ISBN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <!-- 本の画像（リンク） -->
+            <td><%= link_to(@book.item_url) do %>
+                  <%= image_tag(@book.image_url, size: '100x100') %>
+                <% end %></td>
+            <!-- 本の詳細情報 -->
+            <td><%= @book.title %></td>
+            <td><%= @book.author %></td>
+            <td><%= @book.sales_date %></td>
+            <td><%= @book.isbn%></td>
+        </tr>
+      </tbody>
+    </table>
+          <td id="star_counter">
+           平均値:<%= render "public/posts/static_rate_average", book: @book %>
+      </td>
+      <!--コメントの数-->
+      <td id="review_counter">
+           <%= render "public/posts/review_counter", book: @book %>
+      </td>
+      <!-- レビューとコメントのテーブル -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>評価</th>
+          <th></th>
+          <th>会員名</th>
+          <th>投稿日</th>
+          <th>レビュー＆コメント</th>
+          <th>削除</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--レビュー詳細-->
+        <% @posts.each do |post| %>
+        <tr>
+          <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
+          <td><strong><%= post.customer.name %></strong></td>
+          <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td class="comment"><%= post.review %></td>
+          <td><%= link_to '削除', admin_book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+        </tr>
+          <% post.comments.joins(:customer).each do |comment| %>
+            <tr>
+              <td>コメント<td>
+              <td><strong><%= comment.customer.name %>:</strong></td>
+              <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
+              <td class="comment"><%= comment.body %></td>
+              <td class="comment"><%= link_to "削除", admin_book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @posts %>
+    </div>
+    <div class='col-md-1'></div>
+  </div> 
+</div>    
