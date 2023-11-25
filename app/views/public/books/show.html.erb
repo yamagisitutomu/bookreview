@@ -1,0 +1,137 @@
+<style>
+  .comment {
+    word-wrap: break-word; /* 長い単語を改行する */
+    overflow-wrap: break-word; /* ソフトハイフンや半角スペースで改行する */
+    max-width: 300px; /* コメント部分の最大幅を指定 */
+  }
+  .comment a {
+    white-space: nowrap; /* リンクが改行しないように設定 */
+  }
+</style>
+
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-1'></div>
+    <div class='col-md-10'>
+      <!-- 本の詳細情報を表示するテーブル -->
+    <table class='table table-hover table-inverse'>
+      <thead>
+        <tr>
+          <th></th>
+          <th>タイトル</th>
+          <th>著者</th>
+          <th>出版日</th>
+          <th>ISBN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <!-- 本の画像（リンク） -->
+            <td><%= link_to(@book.item_url) do %>
+                  <%= image_tag(@book.image_url, size: '100x100') %>
+                <% end %></td>
+            <!-- 本の詳細情報 -->
+            <td><%= @book.title %></td>
+            <td><%= @book.author %></td>
+            <td><%= @book.sales_date %></td>
+            <td><%= @book.isbn%></td>
+        </tr>
+      </tbody>
+    </table>
+      <!-- 星評価のフォーム -->
+    <h2>Book review</h2>
+    <table class='table table-hover table-inverse'>
+      <tr>
+        <td>
+          <%= form_with model: [@book, @post], url: book_posts_path(@book.isbn), local: true do |f| %>
+            <div class="form-group" id="star">
+              <%= f.label :star %>
+              <%= f.hidden_field :star, id: :review_star, class: 'form-control', value: @post.star.to_i %>
+              <div id="post_raty"></div>
+            </div>
+            <!-- Turbolinksを使用して非同期で星評価を表示 -->
+            <script>
+              $(document).on('turbolinks:load', function() {
+                let elem = document.querySelector('#post_raty');
+                if (elem == null) return;
+                
+                elem.innerHTML = ""
+                let opt = {  
+                  starOn: "<%= asset_path('star-on.png') %>",
+                  starOff: "<%= asset_path('star-off.png') %>",
+                  starHalf: "<%= asset_path('star-half.png') %>",
+                  scoreName: 'post[star]',
+                };
+                raty(elem, opt);
+              });
+            </script>
+            <!--レビューフォーム-->
+          <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
+          <div class="form-group">
+            <%= f.submit "レビュー投稿",class: 'btn btn-success' %>
+          </div>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+    <!--星の平均-->
+      <td id="star_counter">
+           平均値:<%= render "public/posts/static_rate_average", book: @book %>
+      </td>
+      <!--コメントの数-->
+      <td id="review_counter">
+           <%= render "public/posts/review_counter", book: @book %>
+      </td>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>評価</th>
+          <th></th>
+          <th>会員名</th>
+          <th>投稿日</th>
+          <th>レビュー＆コメント</th>
+          <th>編集</th>
+          <th>削除</th>
+          <th>コメント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!--レビュー詳細-->
+        <% @posts.each do |post| %>
+         <% if post.customer.is_active %>
+        <tr>
+          <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
+          <td><strong><%= post.customer.name %></strong></td>
+          <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td class="comment"><%= post.review %></td>
+          <% if post.persisted? && post.customer == current_customer && post.customer.is_active %>
+          <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
+          <td><%= link_to '削除', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+          <% end %>
+          <td colspan="3">
+            <!--コメント投稿-->
+            <%= render "public/comments/form", post: post %>
+          </td>
+        </tr>
+          <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
+            <tr>
+              <td>コメント<td>
+              <td><strong><%= comment.customer.name %>:</strong></td>
+              <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
+              <td class="comment"><%= comment.body %></td>
+              <td></td>
+              <% if comment.customer == current_customer %>
+              <td class="comment"><%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
+              <% end %>
+            </tr>
+          <% end %>
+         <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <% @posts = @book.posts.joins(:customer).where(customers: { is_active: true }).page(params[:page]).per(5) %>
+    <%= paginate @posts %>
+    </div>
+    <div class='col-md-1'></div>
+  </div>  
+</div>    

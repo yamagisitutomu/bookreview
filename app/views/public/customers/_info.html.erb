@@ -1,0 +1,28 @@
+<table class= "table table-bordered" style="color: #000000;" >
+  <tr>
+    <th>名前</th>
+      <td><%= customer.name %></td>
+  </tr>
+  <tr>
+    <th>生年月日</th>
+      <td><%= customer.birthdate %></td>
+  </tr>
+  <tr>
+    <th>性別</th>
+      <td><%= customer.gender %></td>
+  </tr>
+  <tr>
+    <% if current_customer == customer %>
+      <th>メールアドレス</th>
+          <td><%= customer.email %></td>
+    <% end %>
+  </tr>
+</table>
+<div class='row'>
+  <% if current_customer == customer %>
+   <%= link_to edit_customer_path(customer), class: "btn btn-outline-secondary btn-block edit_customer_#{customer.id}" do %>
+    <i class="fas fa-user-cog"></i>
+   <% end %>
+  <% end %>
+</div>
+

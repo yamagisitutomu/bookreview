@@ -60,6 +60,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'kaminari','~> 1.2.1'
+gem 'mini_magick'
 gem 'jquery-rails'
 gem 'rakuten_web_service'
 gem 'dotenv-rails'

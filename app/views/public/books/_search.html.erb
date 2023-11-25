@@ -1,0 +1,8 @@
+    <div class="form-group">
+    <%= form_tag(books_path, method: :get) do %>
+   　    <%= text_field_tag :title, @title, placeholder: "本のタイトルを入力" %>
+        <%= button_tag type: "submit", class: "btn btn-primary" do %>
+        検索
+        <% end %>
+    <% end %>
+    </div>

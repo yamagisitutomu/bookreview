@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="row justify-content-center mb-3">
+        <div class="col-8">
+           <h4>会員情報編集</h4>
+         <%= form_with model: @customer, url:admin_customer_path, method: :patch do |f| %>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>会員ID</td>
+                  <td><%= @customer.id %></td>
+                </tr>
+                <tr>
+                  <td><%= f.label :名前,class:"col-form-label" %></td>
+                  <td><%= f.text_field :name, autofocus: true, autocomplete: "name",class:"form-control" %></td>
+                </tr>
+                <tr>
+                  <td><%= f.label :出生日,class:"col-form-label" %></td>
+                  <td><%= f.date_field :birthdate, autocomplete: "birthdate",class:"form-control" %></td>
+                </tr>
+                <tr>
+                  <td><%= f.label :性別,class:"col-form-label" %></td>
+                  <td><%= f.select :gender, ['男性', '女性', 'その他'], autocomplete: "gender",class:"form-control" %></td>
+                </tr>
+                <tr>
+                  <td><%= f.label :メールアドレス,class:"col-form-label" %></td>
+                  <td><%= f.email_field :email, autocomplete: "email",class:"form-control" %></td>
+                </tr>
+                <tr>
+                  <td><%= f.label :is_active,"会員ステータス",class:"col-form-label" %></td>
+                  <td>
+                      <%= f.radio_button :is_active, :true,class:"form-check-input" %>
+                      <%= f.label :is_active, "有効",class:"form-check-label" %>
+                  </td>
+                  <td>
+                      <%= f.radio_button :is_active, :false,class:"form-check-input" %>
+                      <%= f.label :is_active, "退会",class:"form-check-label" %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class=" mt-3 text-center">
+                 <%= f.submit "変更を保存", class: "btn btn-success" %>
+                 <%= link_to "Back", admin_customer_path, class: "btn btn-primary" %>
+            </div>
+         <% end %>
+        </div>
+    </div>
+</div>
