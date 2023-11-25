@@ -2,7 +2,6 @@ class Book < ApplicationRecord
   validates :title, :author, :isbn, :sales_date, :image_url, :item_url, presence: true
   
   has_one_attached :image
-  has_many :posts, dependent: :destroy
   
   # メソッドを使って `Post` モデルを取得する
   def posts_by_isbn
