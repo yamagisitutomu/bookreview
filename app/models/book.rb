@@ -1,6 +1,8 @@
 class Book < ApplicationRecord
   validates :title, :author, :isbn, :sales_date, :image_url, :item_url, presence: true
   
+  self.primary_key = "isbn"
+  has_many :posts, dependent: :destroy
   has_one_attached :image
   
   # メソッドを使って `Post` モデルを取得する
@@ -10,10 +12,9 @@ class Book < ApplicationRecord
   
   # モデルに楽天APIから取得した情報を保存するメソッドを追加
   def self.fetch_and_save_from_rakuten(title)
-    puts "Search Title: #{title}"
+   
     results = RakutenWebService::Books::Book.search(title: title)
-    # コンソールに結果を表示
-    puts "API Results: #{results.inspect}"
+    
 
     results.each do |result|
       begin
@@ -34,8 +35,7 @@ class Book < ApplicationRecord
       image_url: api_result['mediumImageUrl'].gsub('?_ex=120x120', ''),
       item_url: api_result['itemUrl']  # APIから商品ページのURLを取得
     )
-    # コンソールに保存しようとしている書籍データの内容を表示
-    puts "Saving Book: #{book.inspect}"
+   
     book.save
   end
   
@@ -52,6 +52,4 @@ class Book < ApplicationRecord
     posts.where.not(review: nil).count
   end
   
-  self.primary_key = "isbn"
-  has_many :posts, dependent: :destroy
 end
