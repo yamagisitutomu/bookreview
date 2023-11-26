@@ -26,17 +26,19 @@ class Admin::CustomersController < ApplicationController
   def show_post_history
     # @customerが投稿した本の一覧を取得
     @books = @customer.posts.joins(:book).distinct.pluck(:book_id).map { |book_id| Book.find(book_id) }
+    # @customerが投稿した本に関連するコメントがついた本の一覧を取得
+    @books_with_comments = Book.joins(posts: :comments)
+                              .where(comments: { customer_id: @customer.id })
+                              .distinct
+    # 二つの結果を結合して重複を排除
+    @books += @books_with_comments.uniq { |book| book.id }
     # ページネーションを適用
     @books = Kaminari.paginate_array(@books).page(params[:page]).per(5)
   # @customerをビューに渡す
     @customer = Customer.find(params[:id])
   end
   
-  def review
-    #特定の投稿が存在する本の一覧を取得
-    @books = Post.where(customer_id: @customer_id).joins(:book).distinct.pluck(:book_id).map { |book_id| Book.find(book_id) }
-  end
-    
+  
   
   
   private
