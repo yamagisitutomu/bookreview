@@ -33,7 +33,7 @@ class Admin::CustomersController < ApplicationController
     # 二つの結果を結合して重複を排除
     @books += @books_with_comments.uniq { |book| book.id }
     # ページネーションを適用
-    @books = Kaminari.paginate_array(@books).page(params[:page]).per(2)
+    @books = Kaminari.paginate_array(@books).page(params[:page]).per(5)
   # @customerをビューに渡す
     @customer = Customer.find(params[:id])
   end
