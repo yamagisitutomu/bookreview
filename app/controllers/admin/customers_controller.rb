@@ -30,8 +30,17 @@ class Admin::CustomersController < ApplicationController
     @books_with_comments = Book.joins(posts: :comments)
                               .where(comments: { customer_id: @customer.id })
                               .distinct
-    # 二つの結果を結合して重複を排除
-    @books += @books_with_comments.uniq { |book| book.id }
+    
+    # 重複を取り除いて結合
+    @books += @books_with_comments
+    # 一意の本のリストを作成
+    unique_books = {}
+    @books.each do |book|
+      unique_books[book.id] ||= book
+    end
+    # 重複を取り除いた本のリストに変換
+    @books = unique_books.values
+    
     # ページネーションを適用
     @books = Kaminari.paginate_array(@books).page(params[:page]).per(5)
   # @customerをビューに渡す
