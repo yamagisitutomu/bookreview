@@ -11,7 +11,12 @@ class Public::BooksController < ApplicationController
   # モデルにsome_actionでのデータの保存の記述
   def some_action
     @title = params[:title]
-    @search_result = Book.fetch_and_save_from_rakuten(@title)
+    if @title.present?
+      @search_result = Book.fetch_and_save_from_rakuten(@title)
+    else
+      flash[:error] = "検索キーワードを入力してください。"
+      redirect_to root_path
+    end
   end
   
   
