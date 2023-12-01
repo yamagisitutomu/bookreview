@@ -1,4 +1,8 @@
 <% if @model == "post" %>
   <h3>投稿検索結果 "<%= @content %>"</h3>
+  <% if @book.present? %>
   <%= render partial: 'public/posts/index', locals: { books: @books, book_isbn: @book.isbn } %>
+  <% else %>
+  <p>本が見つかりませんでした。</p>
+  <% end %>
 <% end %>
