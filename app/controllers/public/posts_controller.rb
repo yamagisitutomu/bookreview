@@ -56,7 +56,7 @@ class Public::PostsController < ApplicationController
   
 
   def post_params
-    params.require(:post).permit(:star, :review)
+    params.require(:post).permit(:star, :review, tags_attributes: [:id, :name, :_destroy])
   end
   
   def set_book
