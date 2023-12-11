@@ -65,6 +65,14 @@
                 raty(elem, opt);
               });
             </script>
+            <div class="form-group">
+              <%= f.fields_for :tags do |tag_form| %>
+                <%= tag_form.label :name %>
+                <%= tag_form.text_field :name, class: 'form-control' %>
+                <%= tag_form.check_box :_destroy, class: 'form-check-input' %>
+                <%= tag_form.label :_destroy, class: 'form-check-label', 'data-toggle': 'tooltip', title: 'Remove Tag' %>
+              <% end %>
+            </div>
             <!--レビューフォーム-->
           <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
           <div class="form-group">
