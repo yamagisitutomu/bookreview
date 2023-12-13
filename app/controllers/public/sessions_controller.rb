@@ -10,6 +10,7 @@ class Public::SessionsController < Devise::SessionsController
   end
   
   
+  
   protected
   
   def customer_state
