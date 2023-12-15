@@ -35,7 +35,13 @@ class Public::PostsController < ApplicationController
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
     
+    tag_list = params[:post][:tag_list].split(",")
+     
     if @post.save
+      tag_list.each do |tag_name|
+      tag = Tag.find_or_create_by(name: tag_name.strip)
+      PostTag.create(post: @post, tag: tag)
+      end
       redirect_to book_path(@book.isbn), notice: 'レビューが作成されました。'
     else
     # エラーが発生した場合の処理
@@ -56,7 +62,7 @@ class Public::PostsController < ApplicationController
   
 
   def post_params
-    params.require(:post).permit(:star, :review, tags_attributes: [:id, :name, :_destroy])
+    params.require(:post).permit(:star, :review )
   end
   
   def set_book

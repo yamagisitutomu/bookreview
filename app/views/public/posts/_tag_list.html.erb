@@ -1,0 +1,5 @@
+<% book.posts.each do |post| %>
+  <% post.tags.each do |tag| %>
+    <span class="badge badge-info"><%= tag.name %></span>
+  <% end %>
+<% end %>
