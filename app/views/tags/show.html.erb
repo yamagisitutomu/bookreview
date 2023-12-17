@@ -1,4 +1,12 @@
 <h1>タグ: <%= @tag.name %></h1>
 
 <h2>このタグに関連する本の一覧</h2>
+<% @posts = @tag.posts.joins(:customer).where(customers: { is_active: true }) %>
+<% @books = Kaminari.paginate_array(@posts.map(&:book).uniq).page(params[:page]).per(10) %>
+
+<% if @books.present? %>
+  <% @book = @books.first %>
   <%= render partial: 'public/posts/index', locals: { books: @books, book_isbn: @book.isbn } %>
+<% else %>
+  <p>このタグに関連する本はありません。</p>
+<% end %>

@@ -2,8 +2,14 @@
   <div class = "container-fluid ">
     <div class="row mx-auto">
       <div class="col-3 my-4">
-        <%= link_to root_path, style: "color: white;" do %>
-          <h5><i class="fa-solid fa-book"></i>bookreview</h5>
+        <% if admin_signed_in? %>
+          <%= link_to admin_customers_path, style: "color: white;" do %>
+            <h5><i class="fa-solid fa-book"></i>bookreview</h5>
+          <% end %>
+        <% else %>
+          <%= link_to root_path, style: "color: white;" do %>
+            <h5><i class="fa-solid fa-book"></i>bookreview</h5>
+          <% end %>
         <% end %>
       </div>
       <div class="col-3 my-4">
