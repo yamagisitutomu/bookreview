@@ -65,8 +65,13 @@
                 raty(elem, opt);
               });
             </script>
+            <!--タグーフォーム-->
+            <div class="form-group">
+            <%= f.label :tags %>（タグはつけなくても投稿できます）
+            <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
+            </div>
             <!--レビューフォーム-->
-          <%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
+          <%= f.text_area :review, class: 'form-control', rows: '5', placeholder: "コメントをここに" %>
           <div class="form-group">
             <%= f.submit "レビュー投稿",class: 'btn btn-success' %>
           </div>
@@ -82,6 +87,10 @@
       <td id="review_counter">
            <%= render "public/posts/review_counter", book: @book %>
       </td>
+      <!--タグの表示-->
+      <td id="tag_list">
+      タグ:<%= render "public/posts/tag_list", book: @book %>
+      </td>
     <table class="table">
       <thead>
         <tr>
@@ -89,6 +98,7 @@
           <th></th>
           <th>会員名</th>
           <th>投稿日</th>
+          <th>タグ</th>
           <th>レビュー＆コメント</th>
           <th>編集</th>
           <th>削除</th>
@@ -103,6 +113,11 @@
           <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
           <td><strong><%= post.customer.name %></strong></td>
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td class="tags">
+          <% post.tags.each do |tag| %>
+            <%= link_to tag.name, tag_path(tag) %>
+          <% end %>
+          </td>
           <td class="comment"><%= post.review %></td>
           <% if post.persisted? && post.customer == current_customer && post.customer.is_active %>
           <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>

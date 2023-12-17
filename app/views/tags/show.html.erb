@@ -1,0 +1,4 @@
+<h1>タグ: <%= @tag.name %></h1>
+
+<h2>このタグに関連する本の一覧</h2>
+  <%= render partial: 'public/posts/index', locals: { books: @books, book_isbn: @book.isbn } %>

@@ -13,5 +13,21 @@
 </div>
 <div class='row justify-content-center'>
 <%= render 'public/books/search' %>
+</div>
+<div class='row justify-content-center'>
 <%= render "post_searches/form" %>
+</div>
+<div class='row justify-content-center'>
+  <h4>タグ一覧</h4>
+  <ul class="tag-list">
+    <% @tags.each_slice(5) do |tag_group| %>
+      <div class="row">
+        <% tag_group.each do |tag| %>
+          <div class="col">
+            <li><%= link_to tag.name, tag_path(tag) %></li>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
 </div>

@@ -20,7 +20,12 @@
       raty(elem, opt);
     });
   </script>
-<%= f.text_area :review, rows: '5', placeholder: "コメントをここに" %>
+  <!--タグーフォーム-->
+  <div class="form-group">
+  <%= f.label :tags %>（タグはつけなくても更新できます）
+  <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
+  </div>
+<%= f.text_area :review,  class: 'form-control', rows: '5', placeholder: "コメントをここに" %>
 <!-- 書評送信ボタン -->
 <div class="form-group">
   <%= f.submit class: 'btn btn-success' %>

@@ -16,6 +16,19 @@ class Public::PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
     @book = @post.book # @book を @post の関連する本にセット
+    
+    # tag_list が params[:post] から取得されるようにする
+    tag_list = params[:post][:tag_list].split(',')
+    
+    # 既存の post_tags を削除
+    @post.post_tags.destroy_all
+
+    tag_list.each do |tag_name|
+    tag = Tag.find_or_create_by(name: tag_name.strip)
+    PostTag.create(post: @post, tag: tag)
+    end
+    
+    
     if @post.update(post_params)
       redirect_to book_path(@post.book.isbn), notice: 'レビューが更新されました。'
     else
@@ -35,7 +48,13 @@ class Public::PostsController < ApplicationController
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
     
+    tag_list = params[:post][:tag_list].split(",")
+     
     if @post.save
+      tag_list.each do |tag_name|
+      tag = Tag.find_or_create_by(name: tag_name.strip)
+      PostTag.create(post: @post, tag: tag)
+      end
       redirect_to book_path(@book.isbn), notice: 'レビューが作成されました。'
     else
     # エラーが発生した場合の処理
