@@ -38,12 +38,20 @@
         </tr>
       </tbody>
     </table>
-          <td id="star_counter">
+      <td id="star_counter">
            平均値:<%= render "public/posts/static_rate_average", book: @book %>
       </td>
       <!--コメントの数-->
       <td id="review_counter">
            <%= render "public/posts/review_counter", book: @book %>
+      </td>
+      <!--タグの表示-->
+      <td id="tag_list">
+      タグ:<% @book.posts.each do |post| %>
+            <% post.tags.each do |tag| %>
+             <span class="badge badge-info"><%= tag.name %></span>
+            <% end %>
+          <% end %>
       </td>
       <!-- レビューとコメントのテーブル -->
     <table class="table">
@@ -53,6 +61,7 @@
           <th></th>
           <th>会員名</th>
           <th>投稿日</th>
+          <th>タグ</th>
           <th>レビュー＆コメント</th>
           <th>削除</th>
         </tr>
@@ -64,6 +73,11 @@
           <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
           <td><strong><%= post.customer.name %></strong></td>
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td class="tags">
+          <% post.tags.each do |tag| %>
+            <span class="badge badge-info"><%= tag.name %></span>
+          <% end %>
+          </td>
           <td class="comment"><%= post.review %></td>
           <td><%= link_to '削除', admin_book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
         </tr>

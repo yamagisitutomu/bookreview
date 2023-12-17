@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'tags/show'
 # 顧客用
 # URL /customers/sign_in ...
 devise_for :customers,skip: [:passwords], controllers: {
@@ -49,5 +50,6 @@ root to: 'public/homes#top'
   get "search" => "searches#search"
   # 投稿の検索で使用する
   get "/post_search" => "post_searches#search"
+  resources :tags, only: [:show]
   end
 

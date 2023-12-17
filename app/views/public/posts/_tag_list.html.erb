@@ -1,5 +1,5 @@
 <% book.posts.each do |post| %>
   <% post.tags.each do |tag| %>
-    <span class="badge badge-info"><%= tag.name %></span>
+    <%= link_to tag.name, tag_path(tag) %>
   <% end %>
 <% end %>

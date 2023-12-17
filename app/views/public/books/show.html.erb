@@ -65,8 +65,9 @@
                 raty(elem, opt);
               });
             </script>
+            <!--タグーフォーム-->
             <div class="form-group">
-            <%= f.label :tags %>
+            <%= f.label :tags %>（タグはつけなくても投稿できます）
             <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
             </div>
             <!--レビューフォーム-->
@@ -114,7 +115,7 @@
           <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
           <td class="tags">
           <% post.tags.each do |tag| %>
-            <span class="badge badge-info"><%= tag.name %></span>
+            <%= link_to tag.name, tag_path(tag) %>
           <% end %>
           </td>
           <td class="comment"><%= post.review %></td>
