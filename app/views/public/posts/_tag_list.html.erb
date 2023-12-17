@@ -1,5 +1,9 @@
-<% book.posts.each do |post| %>
+<% seen_tags = [] %>
+<% book.posts.joins(:customer).where(customers: { is_active: true }).each do |post| %>
   <% post.tags.each do |tag| %>
-    <%= link_to tag.name, tag_path(tag) %>
+    <% unless seen_tags.include?(tag.id) %>
+      <%= link_to tag.name, tag_path(tag) %>
+      <% seen_tags << tag.id %>
+    <% end %>
   <% end %>
 <% end %>

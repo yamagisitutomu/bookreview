@@ -67,7 +67,7 @@
             </script>
             <!--タグーフォーム-->
             <div class="form-group">
-            <%= f.label :tags %>（タグはつけなくても投稿できます）
+            <%= f.label :tag_list %>（タグはつけなくても投稿できます）
             <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
             </div>
             <!--レビューフォーム-->
@@ -81,11 +81,17 @@
     </table>
     <!--星の平均-->
       <td id="star_counter">
-           平均値:<%= render "public/posts/static_rate_average", book: @book %>
+        <% active_posts = @book.posts.joins(:customer).where(customers: { is_active: true }) %>
+        <% if active_posts.present? %>
+          平均値:<%= render "public/posts/static_rate_average", book: @book, posts: active_posts %>
+        <% else %>
+          平均値: N/A <!-- または他のメッセージ、アクティブなポストがない場合の処理 -->
+        <% end %>
       </td>
-      <!--コメントの数-->
+      <!--投稿の数-->
       <td id="review_counter">
-           <%= render "public/posts/review_counter", book: @book %>
+        <% active_posts_count = @book.posts.joins(:customer).where(customers: { is_active: true }).count %>
+           投稿数: <%= active_posts_count %>
       </td>
       <!--タグの表示-->
       <td id="tag_list">

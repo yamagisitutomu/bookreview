@@ -39,19 +39,41 @@
       </tbody>
     </table>
       <td id="star_counter">
-           平均値:<%= render "public/posts/static_rate_average", book: @book %>
+        平均値:
+        <div id="star_<%= @book.id %>"></div>
+        <script>
+        $(document).on('turbolinks:load', function() {
+          let elem = document.querySelector('#star_<%= @book.id %>');
+          if (elem == null) return;
+          
+          elem.innerHTML = "";
+          let opt = {  
+            starOn: "<%= asset_path('star-on.png') %>",
+            starOff: "<%= asset_path('star-off.png') %>",
+            starHalf: "<%= asset_path('star-half.png') %>",
+            score: "<%= @book.posts.average(:star).to_f %>",
+            readOnly: true,
+          };
+          raty(elem, opt);
+        });
+        </script>
       </td>
       <!--コメントの数-->
       <td id="review_counter">
-           <%= render "public/posts/review_counter", book: @book %>
+           投稿数： <%= @book.posts.count %>
       </td>
       <!--タグの表示-->
       <td id="tag_list">
-      タグ:<% @book.posts.each do |post| %>
-            <% post.tags.each do |tag| %>
-             <span class="badge badge-info"><%= tag.name %></span>
+        <% seen_tags = [] %>
+        タグ:
+        <% @book.posts.each do |post| %>
+          <% post.tags.each do |tag| %>
+            <% unless seen_tags.include?(tag.id) %>
+              <span class="badge badge-info"><%= tag.name %></span>
+            <% seen_tags << tag.id %>
             <% end %>
           <% end %>
+        <% end %>
       </td>
       <!-- レビューとコメントのテーブル -->
     <table class="table">

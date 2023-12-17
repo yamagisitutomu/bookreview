@@ -14,6 +14,8 @@ class Post < ApplicationRecord
   end
   
   
+  
+  
   belongs_to :customer
   belongs_to :book, primary_key: "isbn"
   has_many :comments, dependent: :destroy

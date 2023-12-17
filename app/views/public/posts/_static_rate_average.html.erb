@@ -9,7 +9,7 @@ $(document).on('turbolinks:load', function() {
     starOn: "<%= asset_path('star-on.png') %>",
     starOff: "<%= asset_path('star-off.png') %>",
     starHalf: "<%= asset_path('star-half.png') %>",
-    score: "<%= book.posts.average(:star).to_f %>",
+    score: <%= book.posts.joins(:customer).where(customers: { is_active: true }).average(:star).to_f %>,
     readOnly: true,
   };
   raty(elem, opt);
