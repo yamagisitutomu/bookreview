@@ -1,6 +1,6 @@
 <% if post.persisted? %>
-  <%= form_with model: [post, Comment.new], url: book_post_comments_path(post.book.isbn, post), local: false do |f| %>
-    <%= f.text_area :body, rows: '5', placeholder: "コメントを追加...", class: "form-control mt-3" %>
+  <%= form_with model: [post, Comment.new], url: book_post_comments_path(post.book.isbn, post), local: false, remote: true do |f| %>
+    <%= f.text_area :body, rows: '5', placeholder: "コメントを追加...", class: "form-control mt-3", id: "comment_textarea" %>
     <div class="text-right">
       <%= f.submit "コメント追加", class: "btn btn-primary mt-3 mb-3" %>
     </div>

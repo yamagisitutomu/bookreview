@@ -57,7 +57,7 @@ class Public::PostsController < ApplicationController
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
     
-   tag_list = params[:post][:tag_list].split(',').map(&:strip)
+    tag_list = params[:post][:tag_list].split(',').map(&:strip)
     
     if @post.save
       tag_list.each do |tag_name|
