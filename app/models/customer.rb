@@ -15,6 +15,10 @@ class Customer < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :comments, dependent: :destroy
   
+  def has_posted_for_book?(book)
+    posts.exists?(book: book)
+  end
+  
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :encrypted_password, presence: true

@@ -38,49 +38,16 @@
         </tr>
       </tbody>
     </table>
-      <!-- 星評価のフォーム -->
     <h2>Book review</h2>
-    <table class='table table-hover table-inverse'>
-      <tr>
-        <td>
-          <%= form_with model: [@book, @post], url: book_posts_path(@book.isbn), remote: true do |f| %>
-            <div class="form-group" id="star">
-              <%= f.label :star %>
-              <%= f.hidden_field :star, id: :review_star, class: 'form-control', value: @post.star.to_i %>
-              <div id="post_raty"></div>
-            </div>
-            <!-- Turbolinksを使用して非同期で星評価を表示 -->
-            <script>
-              $(document).on('turbolinks:load', function() {
-                let elem = document.querySelector('#post_raty');
-                if (elem == null) return;
-                
-                elem.innerHTML = ""
-                let opt = {  
-                  starOn: "<%= asset_path('star-on.png') %>",
-                  starOff: "<%= asset_path('star-off.png') %>",
-                  starHalf: "<%= asset_path('star-half.png') %>",
-                  scoreName: 'post[star]',
-                };
-                raty(elem, opt);
-              });
-            </script>
-            <!--タグーフォーム-->
-            <div class="form-group">
-            <%= f.label :tag_list %>（タグはつけなくても投稿できます）
-            <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
-            </div>
-            <!--レビューフォーム-->
-            <div class="form-group">
-              <%= f.text_area :review, class: 'form-control', rows: '5', placeholder: "コメントをここに" %>
-            </div>
-            <div class="form-group">
-            <%= f.submit "レビュー投稿",class: 'btn btn-success' %>
-            </div>
-          <% end %>
-        </td>
-      </tr>
-    </table>
+      <table class='table table-hover table-inverse'>
+        <tr>
+          <td>
+            <% unless current_customer.has_posted_for_book?(@book) %>
+            <%= render "public/posts/form", book: @book, post: @post %>
+            <% end %>
+          </td>
+        </tr>
+      </table>
     <!--星の平均-->
       <td id="star_counter">
         <% active_posts = @book.posts.joins(:customer).where(customers: { is_active: true }) %>
@@ -93,7 +60,7 @@
       <!--投稿の数-->
       <td id="review_counter">
         <% active_posts_count = @book.posts.joins(:customer).where(customers: { is_active: true }).count %>
-           投稿数: <%= active_posts_count %>
+           <%= render "public/posts/review_counter", book: @book, posts_count: active_posts_count %>
       </td>
       <!--タグの表示-->
       <td id="tag_list">
