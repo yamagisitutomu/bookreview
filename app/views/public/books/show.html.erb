@@ -39,15 +39,16 @@
       </tbody>
     </table>
     <h2>Book review</h2>
-      <table class='table table-hover table-inverse'>
-        <tr>
-          <td>
-            <% unless current_customer.has_posted_for_book?(@book) %>
-            <%= render "public/posts/form", book: @book, post: @post %>
-            <% end %>
-          </td>
-        </tr>
-      </table>
+    <!--ログインしていないユーザーとすでに投稿している人は表示しない-->
+      <% if current_customer.present? && !current_customer.has_posted_for_book?(@book) %>
+        <table class='table table-hover table-inverse'>
+          <tr>
+            <td>
+              <%= render "public/posts/form", book: @book, post: @post %>
+            </td>
+          </tr>
+        </table>
+      <% end %>
     <!--星の平均-->
       <td id="star_counter">
         <% active_posts = @book.posts.joins(:customer).where(customers: { is_active: true }) %>
@@ -77,7 +78,7 @@
           <th>レビュー＆コメント</th>
           <th>編集</th>
           <th>削除</th>
-          <th>コメント</th>
+          <th>コメント投稿</th>
         </tr>
       </thead>
       <tbody>
@@ -100,7 +101,10 @@
           <% end %>
           <td colspan="3">
             <!--コメント投稿-->
-            <%= render "public/comments/form", post: post %>
+            <% if current_customer.present? %>
+            <!-- ログインしている場合のみコメント投稿フォームを表示 -->
+              <%= render "public/comments/form", post: post %>
+            <% end %>
           </td>
         </tr>
           <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
