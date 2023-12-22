@@ -43,7 +43,7 @@
       <% if current_customer.present? && !current_customer.has_posted_for_book?(@book) %>
         <table class='table table-hover table-inverse'>
           <tr>
-            <td>
+            <td id="post_review">
               <%= render "public/posts/form", book: @book, post: @post %>
             </td>
           </tr>
@@ -84,43 +84,16 @@
       <tbody>
         <!--レビュー詳細-->
         <% @posts.each do |post| %>
-         <% if post.customer.is_active %>
-        <tr>
-          <td><%= render "public/posts/static_rate", book: @book, post: post %><td>
-          <td><strong><%= post.customer.name %></strong></td>
-          <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
-          <td class="tags">
-          <% post.tags.each do |tag| %>
-            <%= link_to tag.name, tag_path(tag) %>
-          <% end %>
-          </td>
-          <td class="comment"><%= post.review %></td>
-          <% if post.persisted? && post.customer == current_customer && post.customer.is_active %>
-          <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
-          <td><%= link_to '削除', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
-          <% end %>
-          <td colspan="3">
-            <!--コメント投稿-->
-            <% if current_customer.present? %>
-            <!-- ログインしている場合のみコメント投稿フォームを表示 -->
-              <%= render "public/comments/form", post: post %>
-            <% end %>
-          </td>
-        </tr>
-          <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
-            <tr>
-              <td>コメント<td>
-              <td><strong><%= comment.customer.name %>:</strong></td>
-              <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
-              <td></td>
-              <td class="comment"><%= comment.body %></td>
-              <td></td>
-              <% if comment.customer == current_customer %>
-              <td class="comment"><%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
-              <% end %>
+          <% if post.customer.is_active %>
+            <tr id="posts_index">
+              <%= render "public/posts/index", book: @book, post: post %>
             </tr>
+            <% post.comments.joins(:customer).where(customers: { is_active: true }).each do |comment| %>
+              <tr id="comments_index">
+                <%= render "public/comments/index", comment: comment, current_customer: current_customer %>
+              </tr>
+            <% end %>
           <% end %>
-         <% end %>
         <% end %>
       </tbody>
     </table>

@@ -1,37 +1,20 @@
-<div class='container'>
-  <div class='row'>
-    <div class='col-md-1'></div>
-    <div class='col-md-10'>
-      <% if books.present? %>
-        <table class='table table-hover table-inverse'>
-          <thead>
-            <tr>
-              <th></th>
-              <th>タイトル</th>
-              <th>著者</th>
-              <th>出版日</th>
-              <th>ISBN</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% books.each do |book| %>
-              <tr>
-                <td><%= link_to (image_tag(book.image_url, size: '100x100')), book.item_url %></td>
-                <td><%= book.title %></td>
-                <td><%= book.author %></td>
-                <td><%= book.sales_date %></td>
-                <td><%= book.isbn%></td>
-                <td><%= link_to '詳細', book_path(isbn: book.isbn), class: "book_#{book.isbn}" %></td>
-              </tr>
+          <td><%= render "public/posts/static_rate", book: book, post: post %><td>
+          <td><strong><%= post.customer.name %></strong></td>
+          <td><%= post.created_at&.strftime('%Y/%m/%d') %></td>
+          <td class="tags">
+          <% post.tags.each do |tag| %>
+            <%= link_to tag.name, tag_path(tag) %>
+          <% end %>
+          </td>
+          <td class="comment"><%= post.review %></td>
+          <% if post.persisted? && post.customer == current_customer && post.customer.is_active %>
+          <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
+          <td><%= link_to '削除', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+          <% end %>
+          <td colspan="3">
+            <!--コメント投稿-->
+            <% if current_customer.present? %>
+            <!-- ログインしている場合のみコメント投稿フォームを表示 -->
+              <%= render "public/comments/form", post: post %>
             <% end %>
-          </tbody>
-        </table>
-      <% else %>
-        <p>レビューがありません。</p>
-      <% end %>
-      <%= paginate books %>
-      </div>
-    <div class='col-md-1'></div>
-  </div>  
-</div>    
+          </td>
