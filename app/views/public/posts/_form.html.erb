@@ -1,3 +1,4 @@
+タグはつけなくても投稿できます
 <!-- 星評価のフォーム -->
 <%= form_with model: [book, post], url: book_posts_path(book.isbn), remote: true do |f| %>
   <div class="form-group" id="star">
@@ -23,8 +24,8 @@
   </script>
   <!--タグーフォーム-->
   <div class="form-group">
-    <%= f.label :tag_list %>（タグはつけなくても投稿できます）
-    <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
+    <%= label_tag :tag_list, "タグは（,区切りで入力してください）" %>
+    <%= text_field_tag :tag_list %>
   </div>
   <!--レビューフォーム-->
   <div class="form-group">
