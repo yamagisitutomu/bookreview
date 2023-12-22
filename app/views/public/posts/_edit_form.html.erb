@@ -1,3 +1,4 @@
+タグはつけなくても投稿できます
 <%= form_with model: [book, post], url: book_post_path(book.isbn, post), method: :patch, local: true do |f| %>
   <div class="form-group" id="star">
     <%= f.label :star %>
@@ -22,8 +23,8 @@
   </script>
   <!--タグーフォーム-->
   <div class="form-group">
-  <%= f.label :tags %>（タグはつけなくても更新できます）
-  <%= f.text_field :tag_list, class: 'form-control', placeholder: "コンマで区切ってタグを入力してください" %>
+    <%= label_tag :tag_list, "タグは（,区切りで入力してください）" %>
+    <%= text_field_tag :tag_list %>
   </div>
 <%= f.text_area :review,  class: 'form-control', rows: '5', placeholder: "コメントをここに" %>
 <!-- 書評送信ボタン -->

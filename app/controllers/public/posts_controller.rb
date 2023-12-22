@@ -17,38 +17,37 @@ class Public::PostsController < ApplicationController
     @post = Post.find(params[:id])
     @book = @post.book # @book を @post の関連する本にセット
     
-    # tag_list が params[:post] から取得されるようにする
-    tag_list = params[:post][:tag_list].split(',')
-    
-    # 既存の post_tags を削除
-    @post.post_tags.destroy_all
-
-    tag_list.each do |tag_name|
-    tag = Tag.find_or_create_by(name: tag_name.strip)
-    PostTag.create(post: @post, tag: tag)
+     # 1. カンマ区切りの文字列を配列にする
+    tag_list = params[:tag_list].split(",")
+    # 2. タグ名の配列をタグの配列にする
+    tags = tag_list.map { |tag_list| Tag.find_or_create_by(name: tag_list) }
+    # 3. タグのバリデーションを行い、バリデーションエラーがあればPostのエラーに加える
+    tags.each do |tag|
+      if tag.invalid?
+        @tag_list = params[:tag_list]
+        @post.errors.add(:tags, tag.errors.full_messages.join("\n"))
+        flash.now[:error] = '更新に失敗しました。'
+        return render :edit, status: :unprocessable_entity
+      end
     end
+
+    # 重複したタグを削除
+    tags.uniq!
     
-    
-    if @post.update(post_params)
-      redirect_to book_path(@post.book.isbn), notice: 'レビューが更新されました。'
+    if @post.update(post_params) && @post.update!(tags: tags)
+      redirect_to book_path(@book.isbn), notice: 'レビューが更新されました。'
     else
-      flash[:error] = 'エラーが発生しました。'
-      render :edit
+      @tag_list = params[:tag_list]
+      flash.now[:error] = 'エラーが発生しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @post = Post.find(params[:id])
     
-    # レビューに関連するタグを削除
-    @post.tags.destroy_all
-
-    # タグが他の投稿と関連していない場合、タグを削除
-    @post.tags.each do |tag|
-       tag.destroy if tag.posts.empty?
-    end
-
-    @post.destroy
+    
+    @post.destroy!
     redirect_to book_path(@post.book.isbn), notice: 'レビューが削除されました。'
   end
   
@@ -56,16 +55,28 @@ class Public::PostsController < ApplicationController
     @book = Book.find_by(isbn: params[:book_isbn])
     @post = @book.posts.build(post_params)
     @post.customer = current_customer
-    
-    tag_list = params[:post][:tag_list].split(',').map(&:strip)
-    
-    if @post.save
-      tag_list.each do |tag_name|
-      tag = Tag.find_or_create_by(name: tag_name)
-      PostTag.create(post: @post, tag: tag)
+   
+    # 1. カンマ区切りの文字列を配列にする
+    tag_list = params[:tag_list].split(',')
+    # 2. タグ名の配列をタグの配列にする
+    tags = tag_list.map { |tag_list| Tag.find_or_initialize_by(name: tag_list) }
+    # 3. タグのバリデーションを行い、バリデーションエラーがあればPostのエラーに加える
+    tags.each do |tag|
+      if tag.invalid?
+        @tag_list = params[:tag_list]
+        @post.errors.add(:tags, tag.errors.full_messages.join("\n"))
+        return render :books/show, status: :unprocessable_entity
       end
+    end
+    
+    # 重複したタグを削除
+    tags.uniq!
+    
+    @post.tags = tags
+    if @post.save
       redirect_to book_path(@book.isbn), notice: 'レビューが作成されました。'
     else
+      @tag_list = params[:tag_list]
     # エラーが発生した場合の処理
       redirect_to book_path(@book.isbn), notice: 'エラーが発生しました。'
     end
@@ -84,7 +95,7 @@ class Public::PostsController < ApplicationController
   
 
   def post_params
-    params.require(:post).permit(:star, :review, tag_list: [])
+    params.require(:post).permit(:star, :review)
   end
   
   def set_book
