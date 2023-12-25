@@ -1,0 +1,4 @@
+$('#star_counter').html("<%= j(render 'public/posts/static_rate_average', book: @book, posts: active_posts) %>");
+$('#review_counter').html("<%= j(render 'public/posts/review_counter', book: @book, posts_count: active_posts_count) %>");
+$('#tag_list').html("<%= j(render 'public/posts/tag_list', book: @book) %>");
+$('#posts_index').html("<%= j(render 'public/posts/index', book: @book, post: post) %>");
