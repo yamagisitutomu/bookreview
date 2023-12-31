@@ -49,6 +49,7 @@
           </tr>
         </table>
       <% end %>
+      
     <!--星の平均-->
       <td id="star_counter">
         <% active_posts = @book.posts.joins(:customer).where(customers: { is_active: true }) %>
@@ -67,6 +68,7 @@
       <td id="tag_list">
       タグ:<%= render "public/posts/tag_list", book: @book %>
       </td>
+      
     <table class="table">
       <thead>
         <tr>
