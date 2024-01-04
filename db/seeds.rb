@@ -13,7 +13,7 @@ Admin.create!(
 )
 
 
-正田 = Customer.find_or_create_by!(email: "masada@masada") do |customer|
+masada = Customer.find_or_create_by!(email: "masada@masada") do |customer|
   customer.name = "正田"
   customer.password = "masada"
   customer.birthdate = Date.parse("1999-11-11")
@@ -21,7 +21,7 @@ Admin.create!(
   customer.is_active = true
 end
 
-山田 = Customer.find_or_create_by!(email: "yamada@yamada") do |customer|
+yamada = Customer.find_or_create_by!(email: "yamada@yamada") do |customer|
   customer.name = "山田"
   customer.password = "yamada"
   customer.birthdate = Date.parse("2000-12-22")
