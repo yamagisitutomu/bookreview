@@ -10,7 +10,7 @@ class Public::CommentsController < ApplicationController
       redirect_to book_path(@post.book.isbn), notice: 'コメントが追加されました。'
     else
       # エラーが発生した場合の処理
-      redirect_to book_path(@post.book.isbn), notice: 'エラーが発生しました。'
+      redirect_to book_path(@post.book.isbn), notice: 'コメントが見つかりませんでした。'
     end
   end
 
