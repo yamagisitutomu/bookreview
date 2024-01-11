@@ -85,8 +85,6 @@ class Public::PostsController < ApplicationController
   private
   
   def authorize_user!
-    @post = Post.find(params[:id])
-
     # ログインユーザーが投稿の作成者でない場合、権限がない旨を示す
     unless @post.customer == current_customer
       redirect_to root_path, notice: '権限がありません。'
