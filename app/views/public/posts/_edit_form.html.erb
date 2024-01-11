@@ -17,6 +17,7 @@
         starOff: "<%= asset_path('star-off.png') %>",
         starHalf: "<%= asset_path('star-half.png') %>",
         scoreName: 'post[star]',
+        score: <%= post.star.to_i %> // 追加: 現在の星レビューの値を表示
       };
       raty(elem, opt);
     });
@@ -24,7 +25,7 @@
   <!--タグーフォーム-->
   <div class="form-group">
     <%= label_tag :tag_list, "タグは（,区切りで入力してください）" %>
-    <%= text_field_tag :tag_list %>
+    <%= text_field_tag :tag_list, post.tags.pluck(:name).join(', '), required: true %>
   </div>
 <%= f.text_area :review,  class: 'form-control', rows: '5', placeholder: "コメントをここに" %>
 <!-- 書評送信ボタン -->
