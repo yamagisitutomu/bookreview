@@ -38,6 +38,7 @@
         </tr>
       </tbody>
     </table>
+    
     <h2>Book review</h2>
     <!--ログインしていないユーザーとすでに投稿している人は表示しない-->
       <% if current_customer.present? && !current_customer.has_posted_for_book?(@book) %>
