@@ -1,11 +1,11 @@
-            <tr>
-              <td>コメント</td>
-              <td><strong><%= comment.customer.name %>:</strong></td>
-              <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
-              <td></td>
-              <td class="comment"><%= comment.body %></td>
-              <td></td>
-              <% if comment.customer == current_customer %>
-              <td class="comment"><%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
-              <% end %>
-            </tr>
+<tr>
+  <td>コメント</td>
+  <td><strong><%= comment.customer.name %>:</strong></td>
+  <td><%= comment.created_at&.strftime('%Y/%m/%d') %></td>
+  <td></td>
+  <td class="comment"><%= comment.body %></td>
+  <td></td>
+  <% if comment.customer == current_customer %>
+  <td class="comment"><%= link_to "削除", book_post_comment_path(comment.post.book.isbn, comment.post, comment), method: :delete, remote: true, data: { confirm: '本当に消しますか？' }, class: "btn-sm btn-danger" %></td>
+  <% end %>
+</tr>
