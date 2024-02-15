@@ -42,7 +42,6 @@ class Public::PostsController < ApplicationController
       render :edit, status: :unprocessable_entity
     end
   end
-
   def destroy
     @post = Post.find(params[:id])
     
