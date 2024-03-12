@@ -11,6 +11,7 @@
 <td><%= link_to '編集', edit_book_post_path(post.book.isbn, post), class: "btn btn-sm btn-success edit_book_#{post.id}" %></td>
 <td><%= link_to '削除', book_post_path(post.book.isbn, post), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}", remote: true %></td>
 <% end %>
+
 <td colspan="3">
   <!--コメント投稿-->
   <% if current_customer.present? %>
